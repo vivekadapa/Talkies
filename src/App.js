@@ -1,24 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login'
+import SignUp from './pages/SignUp';
+import Home from './pages/Home';
+import Layout from './components/Layout';
+import Tv from './pages/Tv';
+import Movies from './pages/Movies';
+import Bookmark from './pages/Bookmark';
+import Profile from './pages/Profile'
+import Details from './pages/Details';
+import { BsTypeH2 } from 'react-icons/bs';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App min-w-screen min-h-screen">
+        <Routes>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path='tv' element={<Tv />} />
+            <Route path='movies' element={<Movies />} />
+            <Route path='bookmarks' element={<Bookmark />} />
+            <Route path='profile' element={<Profile />} />
+            <Route path='/:id' element={< Details />} />
+            <Route path='tv/:id' element={< Details />} />
+            <Route path='movies/:id' element={< Details />} />
+          </Route>
+
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
