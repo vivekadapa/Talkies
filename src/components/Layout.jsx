@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FcClapperboard } from 'react-icons/fc'
 import { BsFillGridFill } from 'react-icons/bs'
 import { MdLocalMovies } from 'react-icons/md'
 import { BsBookmarkFill } from 'react-icons/bs'
 import { PiTelevisionBold } from 'react-icons/pi'
-import { FiSearch } from 'react-icons/fi'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
 const Layout = () => {

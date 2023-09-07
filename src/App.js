@@ -1,5 +1,4 @@
 import './App.css';
-import { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login'
 import SignUp from './pages/SignUp';
@@ -10,7 +9,6 @@ import Movies from './pages/Movies';
 import Bookmark from './pages/Bookmark';
 import Profile from './pages/Profile'
 import Details from './pages/Details';
-import { BsTypeH2 } from 'react-icons/bs';
 
 function App() {
   return (

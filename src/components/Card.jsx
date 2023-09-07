@@ -1,14 +1,9 @@
 import React from 'react'
-import { useState } from 'react';
 import {MdLocalMovies} from 'react-icons/md'
 import {PiTelevisionBold} from 'react-icons/pi'
 import { Link, useLocation } from 'react-router-dom';
-import {BsBookmark} from 'react-icons/bs'
-import {BsBookmarkFill} from 'react-icons/bs'
 
 const Card = ({id,img,title,year,type})=>{
-    const [bookmark,setBookmark] = useState(false);
-
     const location = useLocation();
     
 

@@ -175,6 +175,7 @@ const Details = () => {
                                                     <p className='absolute bottom-2 left-2 '>{person.name}</p>
                                                 </div>
                                             }
+                                            return null;
                                         })
                                 }
 
