@@ -29,7 +29,7 @@ const Details = lazy(() => import('./pages/Details'))
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div className='flex items-center justify-center min-h-screen bg-bgdarkb'>Loading....</div>}>
+      <Suspense fallback={<div className='flex items-center justify-center min-h-screen bg-bgdarkb text-white'>Loading....</div>}>
         <div className="App min-w-screen min-h-screen">
           <Routes>
             <Route path='/' element={<Layout />}>
