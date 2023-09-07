@@ -49,7 +49,7 @@ const Tv = () => {
     fetchTop();
 
 
-  }, [])
+  })
 
   console.log(tv)
 

@@ -54,7 +54,7 @@ const Home = () => {
 
         fetchData();
         fetchDataTopRated()
-    }, [])
+    })
 
 
     console.log(topRated);
