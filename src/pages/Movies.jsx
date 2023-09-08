@@ -62,7 +62,7 @@ const Movies = () => {
     fetchHindi()
     fetchTelugu()
     fetchTamil()
-  })
+  },[])
 
   console.log(bolly)
 

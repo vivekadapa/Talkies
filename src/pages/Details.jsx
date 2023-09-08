@@ -55,7 +55,7 @@ const Details = () => {
 
         fetchMovie();
         fetchCast();
-    })
+    },[])
 
     
 
