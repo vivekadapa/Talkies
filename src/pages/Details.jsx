@@ -55,9 +55,9 @@ const Details = () => {
 
         fetchMovie();
         fetchCast();
-    },[])
+    }, [])
 
-    
+
 
 
     return (
@@ -121,10 +121,10 @@ const Details = () => {
                                         <div className='sm:mx-4 block md:hidden'>
                                             <img src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`} alt="" className='md:max-w-sm rounded-md' />
                                         </div>
-                                        <div className='m-4 w-2/3'>
+                                        <div className='m-4 md:w-2/3'>
                                             <div className='flex flex-col gap-6 lg:flex-row justify-between pr-24 lg:items-center'>
                                                 <div className='flex flex-col'>
-                                                    <h1 className='sm:text-4xl font-thin'>{movieDetails.title}</h1>
+                                                    <h1 className='text-xl sm:text-4xl font-thin'>{movieDetails.title}</h1>
                                                     <div className='flex mt-3 text-slate-400'>
                                                         {movieDetails.release_date && (
                                                             <p className='pr-2 border-r-2'>{movieDetails.release_date.slice(0, 4)}</p>
@@ -149,9 +149,9 @@ const Details = () => {
                                                     }
                                                 </div>
                                             </div>
-                                            <div className='my-8 sm:pr-16 font-light'>
+                                            <div className='my-4 md:my-8 sm:pr-16 font-light'>
                                                 <p className='text-xl'>Overview:</p>
-                                                <p className='pl-4 text-slate-400 text-sm sm:text-lg' style={{ lineHeight: '2rem' }}>{movieDetails.overview}</p>
+                                                <p className='pl-4 w-full text-slate-400 text-sm sm:text-lg' style={{ lineHeight: '2rem' }}>{movieDetails.overview}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -160,8 +160,8 @@ const Details = () => {
                         </>
                     )}
 
-                {   
-  
+                {
+
                     cast.length !== 0 && !isLoading ?
                         (<div>
                             <h1>Cast and Crew</h1>

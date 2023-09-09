@@ -29,7 +29,7 @@
   scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
 }
 
-/* Works on Chrome, Edge, and Safari */
+
 *::-webkit-scrollbar {
   height: 4px;
   width: 2px;
@@ -39,13 +39,11 @@
 *::-webkit-scrollbar-thumb {
   background-color: white;
   border-radius: 15px;
-  /* border: 3px solid var(--scroll-bar-bg-color); */
 }
 
 body::-webkit-scrollbar{
   display: none;
 }
-
 
 body{
   min-width: 100vw;
@@ -66,6 +64,7 @@ img{
 .clap path{
   fill: #FC4747;
 }
+
 
 .clap g {
   fill: #161d2f;

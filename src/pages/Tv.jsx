@@ -54,9 +54,9 @@ const Tv = () => {
   console.log(tv)
 
   return (
-    <div className='bg-bgdarkb min-w-screen min-h-screen mt-16 lg:mt-0'>
+    <div className='bg-bgdarkb min-w-screen min-h-screen lg:mt-0'>
 
-      <div className={`lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>
+      <div className={`p-2 lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>
         <label htmlFor="" className='relative sm:w-5/6 w-full'>
           <button className='absolute translate-y-1/3 translate-x-3/4 sm:translate-x-1/4 text-white' >
             <FiSearch className='top-0 text-2xl' /></button>

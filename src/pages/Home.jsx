@@ -54,7 +54,7 @@ const Home = () => {
 
         fetchData();
         fetchDataTopRated()
-    },[])
+    }, [])
 
 
     console.log(topRated);
@@ -62,7 +62,7 @@ const Home = () => {
     return (
         <div className='bg-bgdarkb min-w-full min-h-screen mt-18 pb-8 lg:mt-0'>
 
-            <div className={`lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>
+            <div className={`p-2 lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>
                 <label htmlFor="" className='relative sm:w-5/6 w-full'>
                     <button className='absolute translate-y-1/3 translate-x-3/4 sm:translate-x-1/4 text-white' >
                         <FiSearch className='top-0 text-2xl' /></button>
@@ -92,7 +92,7 @@ const Home = () => {
                                 <div className='flex flex-col gap-6'>
                                     <div>
                                         <h1 className='text-xl font-light'>Trending</h1>
-                                        <div className='card-container flex overflow-x-scroll gap-6 pr-2'>
+                                        <div className='card-container flex overflow-x-scroll overflow-y-hidden gap-6 pr-2'>
                                             {trending.length !== 0 ?
                                                 trending.map((trending, index) => {
                                                     return trending.title ? <Card id={trending.id} key={index} title={trending.title} year={trending.release_date.slice(0, 4)} type={trending.media_type} img={`https://image.tmdb.org/t/p/original/${trending.backdrop_path}`} /> : ''
