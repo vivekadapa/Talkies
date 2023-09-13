@@ -49,7 +49,7 @@ const Tv = () => {
     fetchTop();
 
 
-  },[])
+  }, [])
 
   console.log(tv)
 
@@ -63,6 +63,12 @@ const Tv = () => {
           <input type="text" className='block mx-auto pl-16 sm:px-12 py-2 w-full border-1 font-light border-none outline-none text-white bg-transparent'
             placeholder="Search for movies or TV series"
             value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={async (e) => {
+              if (e.key === 'Enter') {
+                const results = await searchMovies(searchQuery);
+                setSearchResults(results);
+              }
+            }}
           />
           <button className={`absolute top-0 right-8 translate-y-2/3 sm:translate-x-1/4 text-white ${searchQuery !== '' ? 'block' : 'hidden'}`} onClick={() => {
             setSearchQuery('')

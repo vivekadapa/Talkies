@@ -57,7 +57,7 @@ const Home = () => {
     }, [])
 
 
-    console.log(topRated);
+    // console.log(topRated);
 
     return (
         <div className='bg-bgdarkb min-w-full min-h-screen mt-18 pb-8 lg:mt-0'>
@@ -69,16 +69,23 @@ const Home = () => {
                     <input type="text" className='block mx-auto pl-16 sm:px-12 py-2 w-full border-1 font-light border-none outline-none text-white bg-transparent'
                         placeholder="Search for movies or TV series"
                         value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={async (e) => {
+                            if (e.key === 'Enter') {
+                                const results = await searchMovies(searchQuery);
+                                setSearchResults(results);
+                            }
+                        }}
                     />
                     <button className={`absolute top-0 right-8 translate-y-2/3 sm:translate-x-1/4 text-white ${searchQuery !== '' ? 'block' : 'hidden'}`} onClick={() => {
                         setSearchQuery('')
                         setSearchResults([])
                     }}><AiOutlineCloseCircle className='text-xl' /></button>
                 </label>
-                <button className='border-1 rounded text-white px-4 py-1 bg-redcol hover:text-redcol hover:bg-white transition-all duration-300 ease-in-out' onClick={async () => {
-                    const results = await searchMovies(searchQuery);
-                    setSearchResults(results);
-                }}>Search</button>
+                <button className='border-1 rounded text-white px-4 py-1 bg-redcol hover:text-redcol hover:bg-white transition-all duration-300 ease-in-out'
+                    onClick={async () => {
+                        const results = await searchMovies(searchQuery);
+                        setSearchResults(results);
+                    }}>Search</button>
             </div>
             <div className='pt-14 pl-4 text-white lg:pl-40 lg:pt-10'>
                 {isLoading ? (
