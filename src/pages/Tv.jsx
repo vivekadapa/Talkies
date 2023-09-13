@@ -54,7 +54,7 @@ const Tv = () => {
   console.log(tv)
 
   return (
-    <div className='bg-bgdarkb min-w-screen min-h-screen lg:mt-0'>
+    <div className='bg-bgdarkb min-w-screen min-h-screen mt-18 pb-8 lg:mt-0'>
 
       <div className={`p-2 lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>
         <label htmlFor="" className='relative sm:w-5/6 w-full'>
@@ -62,7 +62,9 @@ const Tv = () => {
             <FiSearch className='top-0 text-2xl' /></button>
           <input type="text" className='block mx-auto pl-16 sm:px-12 py-2 w-full border-1 font-light border-none outline-none text-white bg-transparent'
             placeholder="Search for movies or TV series"
-            value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)
+            }
+
             onKeyDown={async (e) => {
               if (e.key === 'Enter') {
                 const results = await searchMovies(searchQuery);
@@ -93,7 +95,7 @@ const Tv = () => {
                 <div className='flex flex-col gap-8 py-10 px-4 text-white lg:pl-36'>
                   <div>
                     <h1>Trending In Tv</h1>
-                    <div className='card-container flex overflow-x-scroll overflow-y-hidden   gap-6'>
+                    <div className='card-container flex overflow-x-scroll overflow-y-hidden gap-6 '>
                       {tv.length !== 0 ?
                         tv.map((tv, index) => {
                           return tv.name && tv.backdrop_path ? <Card id={tv.id} key={index} title={tv.original_name} type={tv.media_type} year={tv.first_air_date.slice(0, 4)} img={`https://image.tmdb.org/t/p/original/${tv.backdrop_path}`} /> : ''
@@ -113,7 +115,7 @@ const Tv = () => {
                   </div>
                 </div>
               ) :
-                <div className='flex flex-wrap gap-4'>
+                <div className='flex flex-wrap gap-4 pt-8 pl-32'>
                   {searchResults.length !== 0 ? (
                     searchResults.filter((movie) => movie.backdrop_path)
                       .map((result, index) => (
