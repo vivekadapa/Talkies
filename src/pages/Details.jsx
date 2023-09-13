@@ -171,8 +171,10 @@ const Details = () => {
                                         .map((person, index) => {
                                             if (index < 10) {
                                                 return <div key={index} className='relative max-w-[200px] transition duration-300 cursor-pointer ease-in-out hover:scale-105 text-white hover:text-redcol'>
-                                                    <img src={`https://image.tmdb.org/t/p/original/${person.profile_path}`} alt="" className='rounded-sm w-full h-full' />
-                                                    <p className='absolute bottom-2 left-2 '>{person.name}</p>
+                                                    <a href={`https://en.wikipedia.org/wiki/${person.name.replaceAll(" ", "_")}`} target='_blank'>
+                                                        <img src={`https://image.tmdb.org/t/p/original/${person.profile_path}`} alt="" className='rounded-sm w-full h-full' />
+                                                        <p className='absolute bottom-2 left-2 '>{person.name}</p>
+                                                    </a>
                                                 </div>
                                             }
                                             return null;
