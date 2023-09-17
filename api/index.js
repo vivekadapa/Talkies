@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 
 const auth = require('./auth');
 
+const server = process.env.server;
 dbConnect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -79,9 +80,6 @@ app.post('/login', async (req, res) => {
 })
 
 
-// app.get("/free-endpoint", (req, res) => {
-//     res.json({ message: "You are free to access me anytime" });
-// });
 
 app.get("/getuser", auth, async (req, res) => {
     console.log(req.user);
@@ -102,14 +100,14 @@ app.get("/getbookmarks", auth, async (req, res) => {
         console.log(user.bookmarks);
 
         const bookmarksarr = [];
-        
-        for(let i=0;i<user.bookmarks.length;i++){
-                let bookmar = await Bookmark.findById(user.bookmarks[i]);
-                console.log(bookmar);
-                bookmarksarr.push(bookmar);
+
+        for (let i = 0; i < user.bookmarks.length; i++) {
+            let bookmar = await Bookmark.findById(user.bookmarks[i]);
+            console.log(bookmar);
+            bookmarksarr.push(bookmar);
         }
         console.log(bookmarksarr);
-        res.json({bookmarksarr});
+        res.json({ bookmarksarr });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -139,7 +137,7 @@ app.post('/addbookmark', auth, async (req, res) => {
         res.json(user);
     } catch (error) {
         console.error('Error adding bookmark:', error);
-        res.status(500).json({ message:"Already added to bookmark",error: 'Internal Server Error' });
+        res.status(500).json({ message: "Already added to bookmark", error: 'Internal Server Error' });
     }
 
 
@@ -147,6 +145,6 @@ app.post('/addbookmark', auth, async (req, res) => {
 
 
 
-app.listen(4000, () => {
+app.listen(server, () => {
     console.log("Server is running at 4000");
 })
