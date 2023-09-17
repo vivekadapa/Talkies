@@ -14,7 +14,7 @@ const Bookmark = () => {
   useEffect(() => {
     const getBookmarks = async () => {
       try {
-        const result = await axios.get('http://localhost:4000/getbookmarks', {
+        const result = await axios.get('https://talkiees.onrender.com/getbookmarks', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

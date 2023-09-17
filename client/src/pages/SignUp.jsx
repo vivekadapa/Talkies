@@ -79,7 +79,7 @@ const SignUp = () => {
         if (errorEmail === "" && errorPass === "" && errorRepeatPass === "" && email !== "" && password !== "" && repeatPass !== "") {
             const configuration = {
                 method: "post",
-                url: "http://localhost:4000/signup",
+                url: "https://talkiees.onrender.com/signup",
                 data: {
                     email,
                     password

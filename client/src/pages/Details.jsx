@@ -69,7 +69,7 @@ const Details = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:4000/addbookmark',
+                'https://talkiees.onrender.com/addbookmark',
                 {
                     id,
                     poster_path,

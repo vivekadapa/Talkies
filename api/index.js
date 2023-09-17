@@ -15,7 +15,7 @@ const server = process.env.server;
 dbConnect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: 'https://talkies-frontend.onrender.com' }));
 
 
 app.post('/signup', async (req, res) => {
@@ -119,7 +119,6 @@ app.post('/addbookmark', auth, async (req, res) => {
     console.log(req.body);
     // console.log(req.user);
     try {
-        //  const user = await User.findOne({ _id: req.user.userId });
         const newBookmark = new Bookmark({
             id: req.body.id,
             poster_path: req.body.poster_path,
