@@ -4,12 +4,12 @@ import { FiSearch } from 'react-icons/fi'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import Card from '../components/Card';
 import CardPoster from '../components/CardPoster';
-
+import { useAuth } from '../AuthContext';
 
 
 const Home = () => {
 
-
+    const { user,token } = useAuth();
     const [trending, setTrending] = useState([]);
     const [topRated, setTopRated] = useState([]);
 
@@ -20,6 +20,12 @@ const Home = () => {
     const trendingUrl = `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.REACT_APP_API_KEY}`;
     const topRatedUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&page=1`;
 
+    // if (!user) {
+    //     window.location.reload();
+    // }
+    // useEffect(()=>{
+    //     window.location.reload();
+    // },[user])
 
     const fetchTrending = async () => {
         const res = await axios.get(trendingUrl);

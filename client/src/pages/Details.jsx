@@ -2,16 +2,14 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { BsPlayFill } from 'react-icons/bs';
-
+import { useAuth } from '../AuthContext';
+import { Navigate } from 'react-router-dom';
 
 
 const Details = () => {
     const Location = useLocation();
     console.log(Location.pathname)
     console.log(Location.pathname.slice(1))
-
-    const [isLoading, setIsLoading] = useState(true);
-
 
     const id = () => {
         const pathname = Location.pathname;
@@ -25,9 +23,11 @@ const Details = () => {
     }
 
 
+    const [isLoading, setIsLoading] = useState(true);
     const [movieDetails, setMovieDetails] = useState({});
     const [cast, setCast] = useState([]);
-
+    const { user, token } = useAuth();
+    const [response,setResponse] = useState("");
     const movieDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos` : `https://api.themoviedb.org/3/movie/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos`;
     const castDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}` : `https://api.themoviedb.org/3/movie/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
 
@@ -40,7 +40,6 @@ const Details = () => {
         const res = await axios.get(castDetailUrl)
         return res.data;
     }
-
     useEffect(() => {
         const fetchMovie = async () => {
             const data = await fetchMovieDetails();
@@ -57,7 +56,41 @@ const Details = () => {
         fetchCast();
     }, [])
 
+    if (!token) {
+        return <Navigate to="/login" />;
+    }
 
+    console.log(movieDetails);
+
+    const addBookmark = async ({ movieDetails }) => {
+
+        const { id, poster_path, backdrop_path } = movieDetails
+        let title = movieDetails.title || movieDetails.name || movieDetails.original_name;
+
+        try {
+            const response = await axios.post(
+                'http://localhost:4000/addbookmark',
+                {
+                    id,
+                    poster_path,
+                    backdrop_path,
+                    title,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log(response.data);
+        }
+        catch (error) {
+            console.log(error.response.message);
+            setResponse(error.response.message)
+            // console.log(error);
+        }
+    }
 
 
     return (
@@ -107,6 +140,12 @@ const Details = () => {
                                                     }
                                                 </div>
                                             </div>
+                                            <div>
+                                                <button className='text-white my-8 font-light bg-redcol px-4 py-2' onClick={() => addBookmark({ movieDetails })}>
+                                                    Add to Bookmarks
+                                                </button>
+                                                <span>{response}</span>
+                                            </div>
                                             <div className='my-8 lg:pr-16 font-light'>
                                                 <p className='text-xl'>Overview:</p>
                                                 <p className='pl-4 text-slate-400 text-sm sm:text-lg' style={{ lineHeight: '2rem' }}>{movieDetails.overview}</p>
@@ -141,15 +180,20 @@ const Details = () => {
                                                     {
                                                         movieDetails.videos && movieDetails.videos.results && movieDetails.videos.results.length > 0 &&
                                                         (
-                                                            <button className='flex items-center'>
+                                                            <a className='flex items-center' target='_blank' href={`https://www.youtube.com/watch?v=${movieDetails.videos.results.length > 0 ? movieDetails.videos.results[0].key : ""}`}>
                                                                 <BsPlayFill className='play text-4xl text-white border-2 rounded-full' />
-                                                                <p className='mx-2'>Watch Trailer</p>
-                                                            </button>
+                                                                <p className='mx-2'>Watch Clip</p>
+                                                            </a>
                                                         )
                                                     }
                                                 </div>
                                             </div>
-                                            <div className='my-4 md:my-8 sm:pr-16 font-light'>
+                                            <div>
+                                                <button className='text-white my-8 font-light bg-redcol px-4 py-2' onClick={() => addBookmark({ movieDetails })}>
+                                                    Add to Bookmarks
+                                                </button>
+                                            </div>
+                                            <div className='my-4 sm:pr-16 font-light'>
                                                 <p className='text-xl'>Overview:</p>
                                                 <p className='pl-4 w-full text-slate-400 text-sm sm:text-lg' style={{ lineHeight: '2rem' }}>{movieDetails.overview}</p>
                                             </div>
