@@ -138,7 +138,6 @@ app.post('/addbookmark', auth, async (req, res) => {
         console.error('Error adding bookmark:', error);
         res.status(500).json({ message: "Already added to bookmark", error: 'Internal Server Error' });
     }
-
 })
 
 
