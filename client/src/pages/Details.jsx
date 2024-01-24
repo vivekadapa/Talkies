@@ -1,9 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Navigate,useLocation } from 'react-router-dom'
 import { BsPlayFill } from 'react-icons/bs';
-import { useAuth } from '../AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext.jsx';
 
 
 const Details = () => {

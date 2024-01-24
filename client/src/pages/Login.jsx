@@ -1,9 +1,7 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FcClapperboard } from 'react-icons/fc'
-import axios from 'axios'
-import Cookies from 'universal-cookie'
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../AuthContext.jsx';
 
 
 
@@ -12,17 +10,18 @@ const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    // const [user,setUser] = useState({})
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPass, setErrorPass] = useState("");
-    const [response,setResponse] = useState("");
+    const [response, setResponse] = useState("");
     const { user, login } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(user){
+        if (user) {
             navigate('/')
         }
-      }, [user,navigate]);
+    }, [user, navigate, response]);
 
     function validateEmail(e) {
         const emailregx = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -75,7 +74,7 @@ const Login = () => {
                 setResponse('');
                 navigate('/');
             } catch (error) {
-                setResponse(error.response.data.message);
+                setResponse(error.response);
                 console.log(error)
             }
 
@@ -110,7 +109,10 @@ const Login = () => {
                         <button type='submit' className='bg-redcol text-white hover:transition-all hover:ease-in hover:duration-150 p-2 rounded hover:text-redcol hover:bg-white'
                             onClick={handleSubmit}
                         >Login to your account</button>
-                        <p className={`text-red-400 rounded text-center py-1 bg-slate-500/25 ${response ? 'block':'hidden'} `}>{response}</p>
+                        <p className={`text-red-400 rounded text-center py-1 bg-slate-500/25 ${response ? 'block' : 'hidden'}`}>
+                            {response && response.data && response.data.message}
+                        </p>
+
                         {/* <p className={`text-green-400 rounded text-center py-1 bg-slate-500/25 ${login ? 'block':'hidden'} `}>User successfully Logged in</p> */}
                         <p className='text-sm text-center text-white'>Don't have an account? <a href='/signup' className='text-redcol hover:border-b-2 border-red-500'>Sign Up</a></p>
                     </form>

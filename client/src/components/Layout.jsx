@@ -5,10 +5,9 @@ import { MdLocalMovies } from 'react-icons/md'
 import { BsBookmarkFill } from 'react-icons/bs'
 import { PiTelevisionBold } from 'react-icons/pi'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import Cookies from 'universal-cookie'
 import { BiLogOut } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext'
+import { useAuth } from '../AuthContext.jsx'
 
 
 const Layout = () => {

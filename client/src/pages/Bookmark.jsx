@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import {useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext.jsx';
 import axios from 'axios';
-import Card from '../components/Card';
+
 
 const Bookmark = () => {
   const { user, token } = useAuth();
