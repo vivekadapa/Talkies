@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuthentication = async () => {
       if (token) {
         try {
-          const response = await axios.get('https://talkiees.onrender.com/getuser', {
+          const response = await axios.get('http://localhost:4000/getuser', {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('https://talkiees.onrender.com/login', {
+      const response = await axios.post('http://localhost:4000/login', {
         email,
         password,
       });
