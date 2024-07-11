@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Navigate,useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { BsPlayFill } from 'react-icons/bs';
 import { useAuth } from '../AuthContext.jsx';
 
@@ -26,7 +26,7 @@ const Details = () => {
     const [movieDetails, setMovieDetails] = useState({});
     const [cast, setCast] = useState([]);
     const { user, token } = useAuth();
-    const [response,setResponse] = useState("");
+    const [response, setResponse] = useState("");
     const movieDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos` : `https://api.themoviedb.org/3/movie/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos`;
     const castDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}` : `https://api.themoviedb.org/3/movie/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
 

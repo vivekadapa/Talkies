@@ -16,11 +16,12 @@ export const AuthProvider = ({ children }) => {
 
   const cookies = new Cookies();
   const token = cookies.get("TOKEN");
+  // const localstorage = new localStorage();
   useEffect(() => {
     const checkAuthentication = async () => {
       if (token) {
         try {
-          const response = await axios.get('http://localhost:4000/getuser', {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/getuser`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -38,12 +39,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     checkAuthentication();
-  }, [])
+  }, [token])
 
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:4000/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
         email,
         password,
       });

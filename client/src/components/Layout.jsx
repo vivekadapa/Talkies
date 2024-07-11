@@ -12,7 +12,7 @@ import { useAuth } from '../AuthContext.jsx'
 
 const Layout = () => {
 
-    const { token,user, logout } = useAuth();
+    const { token, user, logout } = useAuth();
     console.log(user);
     const location = useLocation();
     const [rerenderKey, setRerenderKey] = useState(true);

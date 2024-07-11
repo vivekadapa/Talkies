@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card.jsx';
-import  Search  from '../components/Search.jsx';
-import  DisplaySlider from '../components/DisplaySlider.jsx';
+import Search from '../components/Search.jsx';
+import DisplaySlider from '../components/DisplaySlider.jsx';
 
 
 const Movies = () => {
@@ -57,7 +57,7 @@ const Movies = () => {
 
   return (
     <div className='p-2 bg-bgdarkb min-w-screen min-h-screen pb-8 lg:mt-0'>
-       <Search searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Search searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <div className='pt-10 text-white  lg:pl-32'>
         {isLoading ? (
           <div className='flex items-center justify-center '>Loading....</div>

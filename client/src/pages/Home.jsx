@@ -3,8 +3,8 @@ import axios from 'axios';
 import Card from '../components/Card.jsx';
 import CardPoster from '../components/CardPoster.jsx';
 import { useAuth } from '../AuthContext.jsx';
-import  Search  from '../components/Search.jsx';
-import  DisplaySlider from '../components/DisplaySlider.jsx';
+import Search from '../components/Search.jsx';
+import DisplaySlider from '../components/DisplaySlider.jsx';
 
 
 
@@ -103,7 +103,7 @@ const Home = () => {
                                             )}
                                         </Slider>
                                     </div> */}
-                                    <DisplaySlider title={'Trending'} array={trending} type={'Movies'}  />
+                                    <DisplaySlider title={'Trending'} array={trending} type={'Movies'} />
                                     <div className='px-8'>
                                         <h1 className='text-xl font-light'>Recommended For You</h1>
                                         <div className=' card-container flex flex-wrap gap-4'>

@@ -3,14 +3,14 @@ const Bookmark = require('./bookmarkModel');
 
 
 const UserScehma = mongoose.Schema({
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
     bookmarks: [
         {
@@ -21,4 +21,4 @@ const UserScehma = mongoose.Schema({
 })
 
 
-module.exports = mongoose.model("Users",UserScehma);
+module.exports = mongoose.model("Users", UserScehma);
