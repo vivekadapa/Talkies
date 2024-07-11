@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FcClapperboard } from 'react-icons/fc'
 import { useAuth } from '../AuthContext.jsx';
 
@@ -114,7 +114,7 @@ const Login = () => {
                         </p>
 
                         {/* <p className={`text-green-400 rounded text-center py-1 bg-slate-500/25 ${login ? 'block':'hidden'} `}>User successfully Logged in</p> */}
-                        <p className='text-sm text-center text-white'>Don't have an account? <a href='/signup' className='text-redcol hover:border-b-2 border-red-500'>Sign Up</a></p>
+                        <p className='text-sm text-center text-white'>Don't have an account? <Link to='/signup' className='text-redcol hover:border-b-2 border-red-500'>Sign Up</Link></p>
                     </form>
                 </div>
             </div>
