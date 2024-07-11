@@ -2,6 +2,7 @@ import './App.css';
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.jsx';
+import SkeltonComponent from './components/SkeltonComponent.jsx';
 const Login = lazy(() => import('./pages/Login.jsx'));
 const SignUp = lazy(() => import('./pages/SignUp.jsx'));
 const Home = lazy(() => import('./pages/Home.jsx'));
@@ -29,7 +30,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Suspense fallback={<div className='flex items-center justify-center min-h-screen bg-bgdarkb text-white'>Loading....</div>}>
-          <div className="App min-w-screen min-h-screen">
+          <div className="App relative min-w-screen min-h-screen">
             <Routes>
               <Route path='/' element={<Layout />}>
                 <Route index element={<Home />} />
@@ -43,6 +44,7 @@ function App() {
               </Route>
               <Route path='/login' element={<Login />} />
               <Route path='/signup' element={<SignUp />} />
+              <Route path='/skelton' element={<SkeltonComponent />} />
             </Routes>
           </div>
         </Suspense>

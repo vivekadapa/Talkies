@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuthentication = async () => {
       if (token) {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/getuser`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/getuser`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
         email,
         password,
       });
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, token }}>
+    <AuthContext.Provider value={{ user,setUser, loading, login, logout, token }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,9 +5,11 @@ import axios from 'axios';
 
 const Search = ({ searchResults, setSearchResults, searchQuery, setSearchQuery }) => {
     const searchMovies = async (query) => {
-        const searchUrl = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&query=${query}`;
+        const searchUrl = `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`
         const res = await axios.get(searchUrl);
-        return res.data.results;
+        console.log("hello world")
+        console.log(res)
+        return res.data.data.results;
     };
     return (
         <div className={`p-2 lg:px-14 pt-24 lg:pt-10 w-full flex items-center justify-center`}>

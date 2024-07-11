@@ -80,7 +80,7 @@ const SignUp = () => {
         if (error.email === "" && error.password === "" && error.repeatPassword === "" && user.email !== "" && user.password !== "" && user.repeatPass !== "") {
             const configuration = {
                 method: "post",
-                url: "http://localhost:4000/signup",
+                url: `${process.env.REACT_APP_API_URL}/auth/signup`,
                 data: {
                     email,
                     password

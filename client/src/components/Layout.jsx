@@ -8,6 +8,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import { BiLogOut } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx'
+import Search from './Search.jsx'
 
 
 const Layout = () => {
@@ -15,8 +16,9 @@ const Layout = () => {
     const { token, user, logout } = useAuth();
     console.log(user);
     const location = useLocation();
-    const [rerenderKey, setRerenderKey] = useState(true);
     const navigate = useNavigate();
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
 
     const handleLogout = () => {
@@ -56,11 +58,9 @@ const Layout = () => {
                             Login
                         </a>
                     )}
-                    {/* <Link to={"/profile"}>
-                        <img src="/images/demo1-avatar.jpg" className='w-10 border-2 rounded-full border-white' alt="" />
-                    </Link> */}
                 </div>
             </nav >
+            {/* <Search searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> */}
             <Outlet />
         </>
     )

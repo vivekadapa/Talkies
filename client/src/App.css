@@ -41,9 +41,9 @@
   border-radius: 15px;
 }
 
-body::-webkit-scrollbar{
+/* body::-webkit-scrollbar{
   display: none;
-}
+} */
 
 body{
   min-width: 100vw;
@@ -72,4 +72,14 @@ img{
 
 .play fill{
   color: white;
+}
+
+
+.hide-scroll-bar{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
 }

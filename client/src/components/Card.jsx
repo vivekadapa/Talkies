@@ -8,7 +8,7 @@ const Card = ({ id, img, title, year, type }) => {
 
 
     return (
-        <div className='relative flex-shrink-0 max-w-[480px]:w-52 max-w-xs sm:max-w-sm mt-4 mx-2 transition duration-300 cursor-pointer ease-in-out hover:scale-105 hover:text-redcol'>
+        <div className='relative w-[30rem] h-64 max-w-md overflow-hidden rounded-lg mt-4 transition duration-300 cursor-pointer ease-in-out hover:scale-105 hover:text-redcol'>
             <Link to={type === 'movies' || location.pathname === '/movies' ? `/movies/${id}` : type === 'tv' && location.pathname === '/' ? `/tv/${id}` : `${id}`}>
                 <img src={img} alt="" className='w-full h-full rounded  hover:rounded-none' />
             </Link>

@@ -4,8 +4,9 @@ import Card from '../components/Card.jsx';
 import CardPoster from '../components/CardPoster.jsx';
 import { useAuth } from '../AuthContext.jsx';
 import Search from '../components/Search.jsx';
-import DisplaySlider from '../components/DisplaySlider.jsx';
-
+// import DisplaySlider from '../components/DisplaySlider.jsx';
+import SkeltonComponent from '../components/SkeltonComponent.jsx';
+import MyComponentSkeleton from '../components/MyComponentSkelton.jsx';
 
 
 
@@ -20,22 +21,21 @@ const Home = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const [isLoading, setIsLoading] = useState(true);
-    const trendingUrl = `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.REACT_APP_API_KEY}`;
-    const topRatedUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&page=1`;
 
 
     const fetchTrending = async () => {
-        const res = await axios.get(trendingUrl);
-        return res.data;
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/trendingmovies`);
+        console.log(res)
+        return res.data.data;
     }
 
     const fetchTopRated = async () => {
-        const res = await axios.get(topRatedUrl);
-        return res.data;
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/topratedmovies`);
+        return res.data.data;
     }
 
     const searchMovies = async (query) => {
-        const searchUrl = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_API_KEY}&query=${query}`;
+        const searchUrl = `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`
         const res = await axios.get(searchUrl);
         return res.data.results;
     };
@@ -50,7 +50,6 @@ const Home = () => {
 
         const fetchDataTopRated = async () => {
             const topData = await fetchTopRated();
-            console.log(topData.results);
             setTopRated(topData.results);
             setIsLoading(false);
         }
@@ -66,52 +65,69 @@ const Home = () => {
             <div className='pt-14 text-white lg:pl-32 lg:pt-10'>
                 {isLoading ? (
                     <div className='flex items-center justify-center '>
-                        Loading....
+                        <SkeltonComponent />
                     </div>
                 ) : (
                     <>
                         {
-                            searchResults.length === 0 ? (
-                                <div className='flex flex-col gap-6'>
-                                    {/* <div className='px-8'>
-                                        <h1 className='text-xl font-light'>Trending</h1>
-                                        <Slider
-                                            dots={false}
-                                            infinite={false}
-                                            speed={200}
-                                            slidesToShow={4}
-                                            slidesToScroll={4}
-                                            initialSlide={0}
-                                        >
-                                            {trending.length !== 0 ? (
+                            searchResults && searchResults.length === 0 ? (
+                                <div className=''>
+
+                                    <div className="flex overflow-x-scroll pb-10 hide-scroll-bar">
+                                        <div className="flex flex-nowrap">
+                                            {trending && trending.length !== 0 ? (
                                                 trending.map((trending, index) => {
                                                     return trending.title ? (
-                                                        <Card
-                                                            id={trending.id}
-                                                            key={index}
-                                                            title={trending.title}
-                                                            year={trending.release_date.slice(0, 4)}
-                                                            type={trending.media_type}
-                                                            img={`https://image.tmdb.org/t/p/original/${trending.backdrop_path}`}
-                                                        />
+                                                        <div className='inline-block px-3'>
+                                                            <Card
+                                                                id={trending.id}
+                                                                key={index}
+                                                                title={trending.title}
+                                                                year={trending.release_date.slice(0, 4)}
+                                                                type={trending.media_type}
+                                                                img={`https://image.tmdb.org/t/p/original/${trending.backdrop_path}`}
+                                                            />
+                                                        </div>
                                                     ) : (
                                                         ''
                                                     );
                                                 })
                                             ) : (
-                                                'No movies'
+                                                <div className='flex gap-4'>
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton />
+                                                </div>
+
                                             )}
-                                        </Slider>
-                                    </div> */}
-                                    <DisplaySlider title={'Trending'} array={trending} type={'Movies'} />
+                                        </div>
+                                    </div>
                                     <div className='px-8'>
                                         <h1 className='text-xl font-light'>Recommended For You</h1>
-                                        <div className=' card-container flex flex-wrap gap-4'>
+                                        <div className='card-container flex flex-wrap gap-4'>
                                             {
-                                                topRated.length !== 0 ?
+                                                topRated && topRated.length !== 0 ?
                                                     topRated.map((top, index) => {
                                                         return <CardPoster id={top.id} key={index} title={top.title} year={top.release_date.slice(0, 4)} img={`https://image.tmdb.org/t/p/original/${top.poster_path}`} />
-                                                    }) : ''
+                                                    }) : <>
+
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                        <SkeltonComponent />
+                                                    </>
                                             }
                                         </div>
                                     </div>
@@ -119,7 +135,7 @@ const Home = () => {
                             ) :
 
                                 <div className='flex flex-wrap gap-4'>
-                                    {searchResults.length !== 0 ? (
+                                    {searchResults && searchResults.length !== 0 ? (
                                         searchResults.filter((movie) => movie.backdrop_path)
                                             .map((result, index) => (
                                                 <Card

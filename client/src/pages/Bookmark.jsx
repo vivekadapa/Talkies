@@ -3,10 +3,11 @@ import { FiSearch } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 const Bookmark = () => {
-  const { user, token } = useAuth();
+  const { user, token,setUser } = useAuth();
   const [bookmarks, setBookmarks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -14,13 +15,13 @@ const Bookmark = () => {
   useEffect(() => {
     const getBookmarks = async () => {
       try {
-        const result = await axios.get('https://talkiees.onrender.com/getbookmarks', {
+        const result = await axios.get(`${process.env.REACT_APP_API_URL}/user/getbookmarks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         console.log(result.data);
-        setBookmarks(result.data.bookmarksarr);
+        setBookmarks(result.data.data);
       } catch (error) {
         navigate('/login');
         console.log(error);
@@ -28,7 +29,7 @@ const Bookmark = () => {
     };
 
     getBookmarks();
-  }, []);
+  }, [user]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -61,18 +62,37 @@ const Bookmark = () => {
         <div className='flex flex-wrap gap-4'>
           {filteredBookmarks.length > 0 ? (
             filteredBookmarks.map((bookmark, index) => (
-              <div
-                key={index}
-                className='relative flex-shrink-0 max-w-[200px] sm:max-w-[250px] mt-4 transition duration-300 cursor-pointer ease-in-out hover:scale-105 hover:text-redcol'
-              >
-                <img
-                  src={`https://image.tmdb.org/t/p/original/${bookmark.poster_path}`}
-                  alt=''
-                  className='w-full h-full rounded hover:rounded-none'
-                />
-                <div className='absolute bottom-4 left-4'>
-                  <span className='text-xl'>{bookmark.title}</span>
-                </div>
+              <div className='flex flex-col gap-4'>
+                <Link to={`/${bookmark.id}`}>
+                  <div
+                    key={index}
+                    className='relative flex-shrink-0 max-w-[200px] sm:max-w-[250px] mt-4 transition duration-300 cursor-pointer ease-in-out hover:scale-105 hover:text-redcol'
+                  >
+                    <img
+                      src={`https://image.tmdb.org/t/p/original/${bookmark.poster_path}`}
+                      alt=''
+                      className='w-full h-full rounded hover:rounded-none'
+                    />
+                    <div className='absolute bottom-4 left-4'>
+                      <span className='text-xl'>{bookmark.title}</span>
+                    </div>
+                  </div>
+                </Link>
+                <button onClick={async () => {
+                  console.log("hello world")
+                  try {
+                    const removeBookmark = await axios.request({
+                      url: `${process.env.REACT_APP_API_URL}/user/removebookmark/${bookmark._id}`,
+                      method: 'post',
+                      headers: {
+                        Authorization: `Bearer ${token}`
+                      }
+                    })
+                    setUser(removeBookmark.data.user)
+                  } catch (error) {
+                    console.log(error)
+                  }
+                }} className='w-full px-4 py-2 bg-redcol transition duration-300 rounded-b-md cursor-pointer ease-in-out hover:scale-[1.01] hover:text-white'>Remove Bookmark</button>
               </div>
             ))
           ) : (

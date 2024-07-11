@@ -27,17 +27,17 @@ const Details = () => {
     const [cast, setCast] = useState([]);
     const { user, token } = useAuth();
     const [response, setResponse] = useState("");
-    const movieDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos` : `https://api.themoviedb.org/3/movie/${id()}?api_key=${process.env.REACT_APP_API_KEY}&append_to_response=videos`;
-    const castDetailUrl = Location.pathname.includes('/tv/') ? `https://api.themoviedb.org/3/tv/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}` : `https://api.themoviedb.org/3/movie/${id()}/credits?api_key=${process.env.REACT_APP_API_KEY}`;
+    const movieDetailUrl = Location.pathname.includes('/tv/') ? `${process.env.REACT_APP_API_URL}/tmdb/tv/${id()}` : `${process.env.REACT_APP_API_URL}/tmdb/movie/${id()}`;
+    const castDetailUrl = Location.pathname.includes('/tv/') ? `${process.env.REACT_APP_API_URL}/tmdb/tv/castdetails/${id()}` : `${process.env.REACT_APP_API_URL}/tmdb/movie/castdetails/${id()}`;
 
     const fetchMovieDetails = async () => {
         const res = await axios.get(movieDetailUrl)
-        return res.data;
+        return res.data.data;
     }
 
     const fetchCastDetails = async () => {
         const res = await axios.get(castDetailUrl)
-        return res.data;
+        return res.data.data;
     }
     useEffect(() => {
         const fetchMovie = async () => {
@@ -59,16 +59,15 @@ const Details = () => {
         return <Navigate to="/login" />;
     }
 
-    console.log(movieDetails);
-
     const addBookmark = async ({ movieDetails }) => {
-
+        console.log("hello wrold")
         const { id, poster_path, backdrop_path } = movieDetails
         let title = movieDetails.title || movieDetails.name || movieDetails.original_name;
 
         try {
+            console.log(`${process.env.REACT_APP_API_URL}`)
             const response = await axios.post(
-                'https://talkiees.onrender.com/addbookmark',
+                `${process.env.REACT_APP_API_URL}/user/addbookmark`,
                 {
                     id,
                     poster_path,
@@ -140,7 +139,7 @@ const Details = () => {
                                                 </div>
                                             </div>
                                             <div>
-                                                <button className='text-white my-8 font-light bg-redcol px-4 py-2' onClick={() => addBookmark({ movieDetails })}>
+                                                <button className='text-white my-8 font-light bg-redcol transition-all rounded-md duration-300 ease-in-out hover:scale-105 px-4 py-2' onClick={() => addBookmark({ movieDetails })}>
                                                     Add to Bookmarks
                                                 </button>
                                                 <span>{response}</span>
@@ -204,7 +203,6 @@ const Details = () => {
                     )}
 
                 {
-
                     cast.length !== 0 && !isLoading ?
                         (<div>
                             <h1>Cast and Crew</h1>
