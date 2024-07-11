@@ -63,11 +63,7 @@ const Home = () => {
         <div className='bg-bgdarkb min-w-full min-h-screen mt-18 pb-8 lg:mt-0'>
             <Search searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <div className='pt-14 text-white lg:pl-32 lg:pt-10'>
-                {isLoading ? (
-                    <div className='flex items-center justify-center '>
-                        <SkeltonComponent />
-                    </div>
-                ) : (
+                {
                     <>
                         {
                             searchResults && searchResults.length === 0 ? (
@@ -153,7 +149,7 @@ const Home = () => {
                                 </div>
                         }
                     </>
-                )}
+                }
             </div>
         </div>
     )
