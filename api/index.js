@@ -1,14 +1,8 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const mongoose = require('mongoose');
 const dbConnect = require('./dbConnect')
-const User = require('./models/userModel');
-const Bookmark = require('./models/bookmarkModel')
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const auth = require('./auth');
 
 const { authRouter, userRouter, tmdbRouter } = require('./routes/index')
 
@@ -16,7 +10,7 @@ const server = process.env.server;
 dbConnect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
-app.use(cors({ credentials: true, origin: ['https://talkies-frontend.onrender.com', 'http://localhost:3000'] }));
+app.use(cors({ credentials: true, origin:'https://talkies-frontend.onrender.com'}));
 
 
 app.use('/auth', authRouter);
