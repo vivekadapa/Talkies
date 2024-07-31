@@ -1,16 +1,26 @@
 const axios = require('axios')
-
+const redisClient = require('../redis')
 
 exports.getTrendingMovies = async (req, res) => {
+    const cacheKey = 'trendingMovies';
+
     try {
-        const movies = await axios.request({
-            url: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.API_KEY}`,
-            method: 'get'
-        })
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json({
+                data: JSON.parse(cachedMovies),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
+        const response = await axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.API_KEY}`);
+        await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
+
         res.status(200).json({
-            data: movies.data,
-            success: true
-        })
+            data: response.data,
+            success: true,
+            message: "Data fetched from API"
+        });
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -22,60 +32,91 @@ exports.getTrendingMovies = async (req, res) => {
 
 
 exports.getTopRatedMovies = async (req, res) => {
+    const cacheKey = 'topRatedMovies';
     try {
-        const movies = await axios.request({
-            url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}&page=1`,
-            method: 'get'
-        })
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json({
+                data: JSON.parse(cachedMovies),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
+
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}&page=1`);
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+
         res.status(200).json({
-            data: movies.data,
-            success: true
-        })
+            data: response.data,
+            success: true,
+            message: "Data fetched from API"
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             success: false,
-            message: "Error fetching movies"
-        })
+            message: "Error fetching top-rated movies"
+        });
     }
-}
-
+};
 
 exports.getTrendingTv = async (req, res) => {
+    const cacheKey = 'trendingTv';
     try {
-        const tv = await axios.request({
-            url: `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.API_KEY}&language=en-US`,
-            method: 'get'
-        })
+        const cachedTv = await redisClient.get(cacheKey);
+        if (cachedTv) {
+            return res.status(200).json({
+                data: JSON.parse(cachedTv),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
+
+        const response = await axios.get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.API_KEY}&language=en-US`);
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+
         res.status(200).json({
-            data: tv.data,
-            success: true
-        })
+            data: response.data,
+            success: true,
+            message: "Data fetched from API"
+        });
     } catch (error) {
-        console.log(error)
+        console.error(error);
         res.status(500).json({
             success: false,
-            message: "Error fetching movies"
-        })
+            message: "Error fetching trending TV shows"
+        });
     }
-}
+};
 
 exports.getTopRatedTv = async (req, res) => {
+    const cacheKey = 'topRatedTv';
     try {
-        const tv = await axios.request({
-            url: `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.API_KEY}&language=en-US&page=1`,
-            method: 'get'
-        })
+        const cachedTv = await redisClient.get(cacheKey);
+        if (cachedTv) {
+            return res.status(200).json({
+                data: JSON.parse(cachedTv),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
+
+        const response = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.API_KEY}&language=en-US&page=1`);
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+
         res.status(200).json({
-            data: tv.data,
-            success: true
-        })
+            data: response.data,
+            success: true,
+            message: "Data fetched from API"
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             success: false,
-            message: "Error fetching movies"
-        })
+            message: "Error fetching top-rated TV shows"
+        });
     }
-}
+};
 
 
 exports.searchMovie = async (req, res) => {
