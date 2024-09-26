@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { FcClapperboard } from 'react-icons/fc'
 import { useAuth } from '../AuthContext.jsx';
+// import Slider from 'react-slick';
+// import AutoPlay from '../components/AutoPlay.jsx';
 
 
 
@@ -10,7 +12,6 @@ const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const [user,setUser] = useState({})
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPass, setErrorPass] = useState("");
     const [response, setResponse] = useState("");
@@ -87,9 +88,21 @@ const Login = () => {
 
     }
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        arrows: false,
+    };
+
 
     return (
-        <div className='bg-bgdarkb min-h-screen min-w-screen flex flex-col justify-center items-center'>
+        <div className='bg-bgdarkb min-h-screen flex flex-row px-32 justify-center items-center gap-12'>
+            {/* <AutoPlay /> */}
             <div className='max-[480px]:w-5/6 w-[400px] max-[421px]:w-full'>
                 <FcClapperboard className='clap text-4xl my-8 mx-auto' />
                 <div className='px-8 max-[301px]:p-2 py-4 bg-bgblue rounded-2xl shadow-2xl font-thin'>
@@ -112,8 +125,6 @@ const Login = () => {
                         <p className={`text-red-400 rounded text-center py-1 bg-slate-500/25 ${response ? 'block' : 'hidden'}`}>
                             {response && response.data && response.data.message}
                         </p>
-
-                        {/* <p className={`text-green-400 rounded text-center py-1 bg-slate-500/25 ${login ? 'block':'hidden'} `}>User successfully Logged in</p> */}
                         <p className='text-sm text-center text-white'>Don't have an account? <Link to='/signup' className='text-redcol hover:border-b-2 border-red-500'>Sign Up</Link></p>
                     </form>
                 </div>

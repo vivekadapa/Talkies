@@ -29,8 +29,9 @@ const Details = lazy(() => import('./pages/Details.jsx'))
 function App() {
 
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
+
         <Suspense fallback={<div className='flex items-center justify-center min-h-screen bg-bgdarkb text-white'>   <img className='w-16 h-16' src='./images/Rolling.svg' alt="loading gif" /></div>}>
           <div className="App relative min-w-screen min-h-screen">
             <Routes>
@@ -50,8 +51,8 @@ function App() {
             </Routes>
           </div>
         </Suspense>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -14,9 +15,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const cookies = new Cookies();
+  const navigate = useNavigate()
   // const token = cookies.get("TOKEN");
   const token = localStorage.getItem("jwt_token");
+  if (!token) {
+    navigate('/login')
+  }
   // const localstorage = new localStorage();
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -49,9 +53,6 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      // cookies.set('TOKEN', response.data.token, {
-      //   path: '/',
-      // });
       localStorage.setItem("jwt_token", response.data.token)
       setUser(response.data.user);
     } catch (error) {

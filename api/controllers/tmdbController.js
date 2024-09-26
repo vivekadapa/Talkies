@@ -3,7 +3,7 @@ const redisClient = require('../redis')
 const User = require('../models/userModel')
 
 exports.getTrendingMovies = async (req, res) => {
-    const cacheKey = 'trendingMovies';
+    const cacheKey = 'trendingMovies' + req.user.userId;
 
     try {
         const cachedMovies = await redisClient.get(cacheKey);
@@ -35,7 +35,7 @@ exports.getTrendingMovies = async (req, res) => {
 
 
 exports.getTopRatedMovies = async (req, res) => {
-    const cacheKey = 'topRatedMovies';
+    const cacheKey = 'topRatedMovies' + req.user.userId;
     try {
 
         console.log(req.user)
@@ -45,16 +45,16 @@ exports.getTopRatedMovies = async (req, res) => {
         for (let i = 0; i < user.genres.length; i++) {
             genreSting = genreSting + user.genres[i].split('-')[0] + `${i == user.genres.length - 1 ? "" : ","}`
         }
-        // const cachedMovies = await redisClient.get(cacheKey);
-        // if (cachedMovies) {
-        //     return res.status(200).json({
-        //         data: JSON.parse(cachedMovies),
-        //         success: true,
-        //         message: "Data fetched from cache"
-        //     });
-        // }
-
-        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=5&with_genres=${genreSting}`)
+        const cachedMovies = await redisClient.get(cacheKey);
+        if (cachedMovies) {
+            return res.status(200).json({
+                data: JSON.parse(cachedMovies),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=1&with_genres=${genreSting}`)
+        console.log(response)
         await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
 
         res.status(200).json({
@@ -72,7 +72,7 @@ exports.getTopRatedMovies = async (req, res) => {
 };
 
 exports.getTrendingTv = async (req, res) => {
-    const cacheKey = 'trendingTv';
+    const cacheKey = 'trendingTv' + req.user.userId;
     try {
         const cachedTv = await redisClient.get(cacheKey);
         if (cachedTv) {
@@ -101,7 +101,7 @@ exports.getTrendingTv = async (req, res) => {
 };
 
 exports.getTopRatedTv = async (req, res) => {
-    const cacheKey = 'topRatedTv';
+    const cacheKey = 'topRatedTv' + req.user.userId;
     try {
         const cachedTv = await redisClient.get(cacheKey);
         if (cachedTv) {

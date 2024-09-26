@@ -13,8 +13,9 @@ import { useAuth } from '../AuthContext.jsx'
 
 const Layout = () => {
 
-    const { token, user, logout } = useAuth();
+    const { user, logout } = useAuth();
     console.log(user);
+    const token = localStorage.getItem("jwt_token")
     const location = useLocation();
     const navigate = useNavigate();
     const [searchResults, setSearchResults] = useState([]);
@@ -49,14 +50,14 @@ const Layout = () => {
                             <BiLogOut className="max-w-[394px]:text-xl text-2xl text-slate-400" />
                         </button>
                     ) : (
-                        <a
+                        <button
                             className="p-1 px-2 text-white bg-redcol rounded-md cursor-pointer"
                             onClick={() => {
                                 navigate('/login');
                             }}
                         >
                             Login
-                        </a>
+                        </button>
                     )}
                 </div>
             </nav >

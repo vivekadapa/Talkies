@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Card from '../components/Card.jsx';
 import CardPoster from '../components/CardPoster.jsx';
-import { useAuth } from '../AuthContext.jsx';
 import Search from '../components/Search.jsx';
 // import DisplaySlider from '../components/DisplaySlider.jsx';
 import SkeltonComponent from '../components/SkeltonComponent.jsx';
@@ -14,6 +13,9 @@ import MyComponentSkeleton from '../components/MyComponentSkelton.jsx';
 const Home = () => {
 
     const token = localStorage.getItem("jwt_token")
+    if(!token){
+        
+    }
     const [trending, setTrending] = useState([]);
     const [topRated, setTopRated] = useState([]);
 
