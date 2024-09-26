@@ -24,12 +24,12 @@ function AutoPlay() {
     return (
         <div className="slider-container max-[800px]:hidden w-1/2">
             <Slider {...settings}>
-                <div>
+                {/* <div>
                     <img src="./images/step1_image.png" alt="" />
                 </div>
                 <div>
                     <img src="./images/step2_image.png" alt="" />
-                </div>
+                </div> */}
                 <div>
                     <h3>3</h3>
                 </div>
