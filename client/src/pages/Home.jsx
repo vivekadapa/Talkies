@@ -7,13 +7,13 @@ import Search from '../components/Search.jsx';
 // import DisplaySlider from '../components/DisplaySlider.jsx';
 import SkeltonComponent from '../components/SkeltonComponent.jsx';
 import MyComponentSkeleton from '../components/MyComponentSkelton.jsx';
-
+// import Rolling from './Rolling.'
 
 
 
 const Home = () => {
 
-    const { user, token } = useAuth();
+    const token = localStorage.getItem("jwt_token")
     const [trending, setTrending] = useState([]);
     const [topRated, setTopRated] = useState([]);
 
@@ -24,19 +24,33 @@ const Home = () => {
 
 
     const fetchTrending = async () => {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/trendingmovies`);
+        const res = await axios.request({
+            url: `${process.env.REACT_APP_API_URL}/tmdb/trendingmovies`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         console.log(res)
         return res.data.data;
     }
 
     const fetchTopRated = async () => {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/topratedmovies`);
+        const res = await axios.request({
+            url: `${process.env.REACT_APP_API_URL}/tmdb/topratedmovies`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         return res.data.data;
     }
 
     const searchMovies = async (query) => {
-        const searchUrl = `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`
-        const res = await axios.get(searchUrl);
+        const res = await axios.request({
+            url: `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         return res.data.results;
     };
 
@@ -90,13 +104,13 @@ const Home = () => {
                                                 })
                                             ) : (
                                                 <div className='flex gap-4'>
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
-                                                    <MyComponentSkeleton />
+                                                    <MyComponentSkeleton key={1} />
+                                                    <MyComponentSkeleton key={2} />
+                                                    <MyComponentSkeleton key={3} />
+                                                    <MyComponentSkeleton key={4} />
+                                                    <MyComponentSkeleton key={5} />
+                                                    <MyComponentSkeleton key={6} />
+                                                    <MyComponentSkeleton key={7} />
                                                 </div>
 
                                             )}
@@ -125,12 +139,36 @@ const Home = () => {
                                                         <SkeltonComponent />
                                                     </>
                                             }
+
+                                            {/* <ul class="inline-flex -space-x-px text-sm">
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                                                </li>
+                                            </ul> */}
                                         </div>
                                     </div>
                                 </div>
                             ) :
 
-                                <div className='flex flex-wrap gap-4'>
+                                <div className='flex flex-wrap gap-4 mx-12'>
                                     {searchResults && searchResults.length !== 0 ? (
                                         searchResults.filter((movie) => movie.backdrop_path)
                                             .map((result, index) => (

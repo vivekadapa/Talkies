@@ -13,6 +13,27 @@ exports.getUser = async (req, res) => {
     }
 }
 
+
+exports.addGenre = async (req, res) => {
+    const { userId } = req.user
+    
+    try {
+        const user = await User.findByIdAndUpdate(userId, {
+            genres: req.body
+        }, { new: true })
+        console.log(user)
+        res.status(201).json({
+            message: "Genres Updated",
+            data: user
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error?.msg,
+            success: false
+        })
+    }
+}
+
 exports.getBookmarks = async (req, res) => {
     try {
         const user = await User.findById(req.user.userId).populate('bookmarks');
@@ -21,7 +42,7 @@ exports.getBookmarks = async (req, res) => {
             res.status(404).json({ error: 'User not found' });
             return;
         }
-        console.log(user);
+        console.log("user: " + user);
         // console.log(user.bookmarks);
 
         // const bookmarksarr = [];

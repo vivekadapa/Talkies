@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const bookmarkScehma = mongoose.Schema({
     id:{
         type:Number,
-        unique:true
     },
     poster_path: {
         type: String

@@ -4,9 +4,15 @@ import { AiOutlineCloseCircle } from 'react-icons/ai'
 import axios from 'axios';
 
 const Search = ({ searchResults, setSearchResults, searchQuery, setSearchQuery }) => {
+    const token = localStorage.getItem("jwt_token")
     const searchMovies = async (query) => {
-        const searchUrl = `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`
-        const res = await axios.get(searchUrl);
+        // const searchUrl = `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`
+        const res = await axios.request({
+            url: `${process.env.REACT_APP_API_URL}/tmdb/searchmovie/${query}`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         console.log("hello world")
         console.log(res)
         return res.data.data.results;

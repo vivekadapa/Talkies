@@ -1,5 +1,6 @@
 const axios = require('axios')
 const redisClient = require('../redis')
+const User = require('../models/userModel')
 
 exports.getTrendingMovies = async (req, res) => {
     const cacheKey = 'trendingMovies';
@@ -14,6 +15,8 @@ exports.getTrendingMovies = async (req, res) => {
             });
         }
         const response = await axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.API_KEY}`);
+        // const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&with_genres=${genreSting}`)
+        // console.log(response)
         await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
 
         res.status(200).json({
@@ -34,17 +37,25 @@ exports.getTrendingMovies = async (req, res) => {
 exports.getTopRatedMovies = async (req, res) => {
     const cacheKey = 'topRatedMovies';
     try {
-        const cachedMovies = await redisClient.get(cacheKey);
-        if (cachedMovies) {
-            return res.status(200).json({
-                data: JSON.parse(cachedMovies),
-                success: true,
-                message: "Data fetched from cache"
-            });
-        }
 
-        const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}&page=1`);
-        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+        console.log(req.user)
+        const user = await User.findOne({ email: req.user.userEmail })
+        console.log(user);
+        let genreSting = "";
+        for (let i = 0; i < user.genres.length; i++) {
+            genreSting = genreSting + user.genres[i].split('-')[0] + `${i == user.genres.length - 1 ? "" : ","}`
+        }
+        // const cachedMovies = await redisClient.get(cacheKey);
+        // if (cachedMovies) {
+        //     return res.status(200).json({
+        //         data: JSON.parse(cachedMovies),
+        //         success: true,
+        //         message: "Data fetched from cache"
+        //     });
+        // }
+
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=5&with_genres=${genreSting}`)
+        await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
 
         res.status(200).json({
             data: response.data,
@@ -73,7 +84,7 @@ exports.getTrendingTv = async (req, res) => {
         }
 
         const response = await axios.get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.API_KEY}&language=en-US`);
-        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+        await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
 
         res.status(200).json({
             data: response.data,
@@ -102,7 +113,7 @@ exports.getTopRatedTv = async (req, res) => {
         }
 
         const response = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.API_KEY}&language=en-US&page=1`);
-        await redisClient.setEx(cacheKey, 3600, JSON.stringify(response.data));
+        await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
 
         res.status(200).json({
             data: response.data,
@@ -140,11 +151,21 @@ exports.searchMovie = async (req, res) => {
 
 
 exports.getMovieDetails = async (req, res) => {
+    const cacheKey = "movieId" + req.params.id;
     try {
+        const cachedMovie = await redisClient.get(cacheKey);
+        if (cachedMovie) {
+            return res.status(200).json({
+                data: JSON.parse(cachedMovie),
+                success: true,
+                message: "Data fetched from cache"
+            });
+        }
         const movies = await axios.request({
             url: `https://api.themoviedb.org/3/movie/${req.params.id}?api_key=${process.env.API_KEY}&append_to_response=videos`,
             method: 'get'
         })
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(movies.data));
         res.status(200).json({
             data: movies.data,
             success: true

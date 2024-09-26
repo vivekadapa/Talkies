@@ -15,7 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const cookies = new Cookies();
-  const token = cookies.get("TOKEN");
+  // const token = cookies.get("TOKEN");
+  const token = localStorage.getItem("jwt_token");
   // const localstorage = new localStorage();
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -48,9 +49,10 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      cookies.set('TOKEN', response.data.token, {
-        path: '/',
-      });
+      // cookies.set('TOKEN', response.data.token, {
+      //   path: '/',
+      // });
+      localStorage.setItem("jwt_token", response.data.token)
       setUser(response.data.user);
     } catch (error) {
       console.error('Login failed:', error);
@@ -59,14 +61,15 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    cookies.remove('TOKEN', { path: '/' });
+    // cookies.remove('TOKEN', { path: '/' });
+    localStorage.removeItem("jwt_token")
     setUser(null);
   };
 
 
 
   return (
-    <AuthContext.Provider value={{ user,setUser, loading, login, logout, token }}>
+    <AuthContext.Provider value={{ user, setUser, loading, login, logout, token }}>
       {children}
     </AuthContext.Provider>
   );

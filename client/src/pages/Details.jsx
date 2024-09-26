@@ -6,9 +6,9 @@ import { useAuth } from '../AuthContext.jsx';
 
 
 const Details = () => {
+
     const Location = useLocation();
-    console.log(Location.pathname)
-    console.log(Location.pathname.slice(1))
+    const token = localStorage.getItem("jwt_token")
 
     const id = () => {
         const pathname = Location.pathname;
@@ -25,18 +25,25 @@ const Details = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [movieDetails, setMovieDetails] = useState({});
     const [cast, setCast] = useState([]);
-    const { user, token } = useAuth();
     const [response, setResponse] = useState("");
     const movieDetailUrl = Location.pathname.includes('/tv/') ? `${process.env.REACT_APP_API_URL}/tmdb/tv/${id()}` : `${process.env.REACT_APP_API_URL}/tmdb/movie/${id()}`;
     const castDetailUrl = Location.pathname.includes('/tv/') ? `${process.env.REACT_APP_API_URL}/tmdb/tv/castdetails/${id()}` : `${process.env.REACT_APP_API_URL}/tmdb/movie/castdetails/${id()}`;
 
     const fetchMovieDetails = async () => {
-        const res = await axios.get(movieDetailUrl)
+        const res = await axios.get(movieDetailUrl, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         return res.data.data;
     }
 
     const fetchCastDetails = async () => {
-        const res = await axios.get(castDetailUrl)
+        const res = await axios.get(castDetailUrl, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         return res.data.data;
     }
     useEffect(() => {
@@ -97,6 +104,7 @@ const Details = () => {
                 {isLoading ? (
                     <div className='flex items-center justify-center '>
                         Loading....
+                        {/* <img src='./Rolling.svg' alt="" /> */}
                     </div>
                 ) :
                     (
@@ -111,7 +119,7 @@ const Details = () => {
                                             <img src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`} alt="" className='lg:max-w-sm rounded-md' />
                                         </div>
                                         <div className='m-4 lg:w-2/3'>
-                                            <div className='flex flex-col gap-6 lg:flex-row justify-between pr-24 lg:items-center'>
+                                            <div className='flex flex-col gap-6 lg:flex-row justify-between pr-20 lg:items-center'>
                                                 <div className='flex flex-col'>
                                                     <h1 className='sm:text-4xl font-thin'>{movieDetails.original_name}</h1>
                                                     <div className='flex mt-3 text-slate-400'>

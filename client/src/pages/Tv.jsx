@@ -15,17 +15,25 @@ const Tv = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-
+  const token = localStorage.getItem("jwt_token")
   const tvUrl = `${process.env.REACT_APP_API_URL}/tmdb/trendingtv`;
   const topRatedTv = `${process.env.REACT_APP_API_URL}/tmdb/topratedtv`;
 
   const fetchTv = async () => {
-    const res = await axios.get(tvUrl);
+    const res = await axios.get(tvUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data.data;
   };
 
   const fetchTopRated = async () => {
-    const res = await axios.get(topRatedTv);
+    const res = await axios.get(topRatedTv, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return res.data.data;
   };
 

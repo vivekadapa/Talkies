@@ -8,7 +8,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import { BiLogOut } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx'
-import Search from './Search.jsx'
+// import Search from './Search.jsx'
 
 
 const Layout = () => {

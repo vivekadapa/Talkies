@@ -10,6 +10,8 @@ const Movies = () => {
   const [bolly, setBolly] = useState([]);
   const [tolly, setTolly] = useState([]);
   const [kolly, setKolly] = useState([]);
+
+  const token = localStorage.getItem("jwt_token")
   const [isLoading, setIsLoading] = useState(true);
   const hindiMovieURl = `${process.env.REACT_APP_API_URL}/tmdb/moviesByLang/hi`;
   const teluguMovieURL = `${process.env.REACT_APP_API_URL}/tmdb/moviesByLang/te`;
@@ -20,17 +22,29 @@ const Movies = () => {
 
 
   const fetchBolly = async () => {
-    const res = await axios.get(hindiMovieURl);
+    const res = await axios.get(hindiMovieURl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data.data;
   };
 
   const fetchTolly = async () => {
-    const res = await axios.get(teluguMovieURL);
+    const res = await axios.get(teluguMovieURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data.data;
   };
 
   const fetchKolly = async () => {
-    const res = await axios.get(tamilMovieURL);
+    const res = await axios.get(tamilMovieURL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data.data;
   };
 
