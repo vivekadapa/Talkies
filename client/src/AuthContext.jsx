@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,12 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate()
-  // const token = cookies.get("TOKEN");
   const token = localStorage.getItem("jwt_token");
-  if (!token) {
-    navigate('/login')
-  }
-  // const localstorage = new localStorage();
+
   useEffect(() => {
     const checkAuthentication = async () => {
       if (token) {
@@ -36,9 +31,11 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
           console.log("Authentication Failed");
           setLoading(false);
+          navigate('/login')
         }
       }
       else {
+        navigate('/login')
         setLoading(false);
       }
     }
@@ -62,7 +59,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    // cookies.remove('TOKEN', { path: '/' });
     localStorage.removeItem("jwt_token")
     setUser(null);
   };
