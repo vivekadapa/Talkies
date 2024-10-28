@@ -36,6 +36,8 @@ exports.getTrendingMovies = async (req, res) => {
 
 exports.getTopRatedMovies = async (req, res) => {
     const cacheKey = 'topRatedMovies' + req.user.userId;
+    const page = req.query.page ? req.query.page : 1;
+    console.log(page)
     try {
 
         console.log(req.user)
@@ -45,23 +47,27 @@ exports.getTopRatedMovies = async (req, res) => {
         for (let i = 0; i < user.genres.length; i++) {
             genreSting = genreSting + user.genres[i].split('-')[0] + `${i == user.genres.length - 1 ? "" : ","}`
         }
-        const cachedMovies = await redisClient.get(cacheKey);
-        if (cachedMovies) {
-            return res.status(200).json({
-                data: JSON.parse(cachedMovies),
-                success: true,
-                message: "Data fetched from cache"
-            });
+        if (page == 1) {
+            const cachedMovies = await redisClient.get(cacheKey);
+            if (cachedMovies) {
+                return res.status(200).json({
+                    data: JSON.parse(cachedMovies),
+                    success: true,
+                    message: "Data fetched from cache"
+                });
+            }
         }
-        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=1&with_genres=${genreSting}`)
-        console.log(response)
-        await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
-
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&page=${page}&with_genres=${genreSting}`)
+        // console.log(response)
         res.status(200).json({
             data: response.data,
             success: true,
             message: "Data fetched from API"
         });
+        if (page == 1) {
+            await redisClient.setEx(cacheKey, 24 * 3600, JSON.stringify(response.data));
+        }
+
     } catch (error) {
         console.error(error);
         res.status(500).json({

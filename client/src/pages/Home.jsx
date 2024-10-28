@@ -6,6 +6,7 @@ import Search from '../components/Search.jsx';
 // import DisplaySlider from '../components/DisplaySlider.jsx';
 import SkeltonComponent from '../components/SkeltonComponent.jsx';
 import MyComponentSkeleton from '../components/MyComponentSkelton.jsx';
+import Pagination from '../components/Pagination.jsx';
 // import Rolling from './Rolling.'
 
 
@@ -13,12 +14,9 @@ import MyComponentSkeleton from '../components/MyComponentSkelton.jsx';
 const Home = () => {
 
     const token = localStorage.getItem("jwt_token")
-    if(!token){
-        
-    }
     const [trending, setTrending] = useState([]);
     const [topRated, setTopRated] = useState([]);
-
+    const [page, setPage] = useState(1);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -36,9 +34,10 @@ const Home = () => {
         return res.data.data;
     }
 
-    const fetchTopRated = async () => {
+    const fetchTopRated = async (page) => {
+        console.log(page)
         const res = await axios.request({
-            url: `${process.env.REACT_APP_API_URL}/tmdb/topratedmovies`,
+            url: `${process.env.REACT_APP_API_URL}/tmdb/topratedmovies?page=${page ? page : 1}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -64,15 +63,17 @@ const Home = () => {
             setTrending(data.results);
         };
 
-        const fetchDataTopRated = async () => {
-            const topData = await fetchTopRated();
+        const fetchDataTopRated = async (page) => {
+            console.log("page changed ")
+            console.log(page)
+            const topData = await fetchTopRated(page);
             setTopRated(topData.results);
             setIsLoading(false);
         }
 
         fetchData();
-        fetchDataTopRated()
-    }, [])
+        fetchDataTopRated(page)
+    }, [page])
 
 
     return (
@@ -84,13 +85,12 @@ const Home = () => {
                         {
                             searchResults && searchResults.length === 0 ? (
                                 <div className=''>
-
                                     <div className="flex overflow-x-scroll pb-10 hide-scroll-bar">
                                         <div className="flex flex-nowrap">
                                             {trending && trending.length !== 0 ? (
                                                 trending.map((trending, index) => {
                                                     return trending.title ? (
-                                                        <div className='inline-block px-3'>
+                                                        <div key={index} className='inline-block px-3'>
                                                             <Card
                                                                 id={trending.id}
                                                                 key={index}
@@ -120,7 +120,7 @@ const Home = () => {
                                     </div>
                                     <div className='px-8'>
                                         <h1 className='text-xl font-light'>Recommended For You</h1>
-                                        <div className='card-container flex flex-wrap gap-4'>
+                                        <div className='card-container items-end flex flex-wrap gap-4'>
                                             {
                                                 topRated && topRated.length !== 0 ?
                                                     topRated.map((top, index) => {
@@ -141,30 +141,43 @@ const Home = () => {
                                                         <SkeltonComponent />
                                                     </>
                                             }
-
-                                            {/* <ul class="inline-flex -space-x-px text-sm">
+                                            <ul className="ml-auto mr-40 inline-flex -space-x-px text-sm">
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                                                    <div onClick={() => {
+                                                        if (page === 1) {
+                                                            setPage(1)
+                                                        }
+                                                        else {
+                                                            setPage((prev) => setPage(prev - 1))
+                                                        }
+                                                    }} className="flex cursor-pointer items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500  border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                                                    <div onClick={() => setPage(1)} className={`flex cursor-pointer items-center justify-center px-3 h-8 leading-tight ${page == 1 ? 'text-blue-600  bg-gray-700' : 'bg-transparent text-gray-500'}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>1</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                                                    <div onClick={() => setPage(2)} className={`flex cursor-pointer items-center justify-center px-3 h-8 leading-tight ${page == 2 ? 'text-blue-600 bg-gray-700' : 'bg-transparent text-gray-500'}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>2</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                                                    <div onClick={() => setPage(3)} className={`flex cursor-pointer items-center justify-center px-3 h-8 leading-tight ${page == 3 ? 'text-blue-600 bg-gray-700' : 'bg-transparent text-gray-500'}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>3</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                                                    <div onClick={() => setPage(4)} className={`flex cursor-pointer items-center justify-center px-3 h-8 leading-tight ${page == 4 ? 'text-blue-600 bg-gray-700' : 'bg-transparent text-gray-500'}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>4</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                                                    <div onClick={() => setPage(5)} className={`flex cursor-pointer items-center justify-center px-3 h-8 leading-tight ${page == 5 ? 'text-blue-600 bg-gray-700' : 'bg-transparent text-gray-500'}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>5</div>
                                                 </li>
                                                 <li>
-                                                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                                                    <div onClick={() => {
+                                                        if (page === 5) {
+                                                            setPage(5)
+                                                        }
+                                                        else {
+                                                            setPage((prev) => setPage(prev + 1))
+                                                        }
+                                                    }} className="flex cursor-pointer items-center justify-center px-3 h-8 leading-tight text-gray-500  border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</div>
                                                 </li>
-                                            </ul> */}
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
